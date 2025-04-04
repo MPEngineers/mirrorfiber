@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mirror Fiber</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #6c757d;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>System Overview</h2>
+            <p>Welcome to the Admin Dashboard. Here you can manage all aspects of the Mirror Fiber system.</p>
+        </div>
+        
+        <div class="grid">
+            <div class="card">
+                <h2>User Management</h2>
+                <p>Manage users and permissions.</p>
+                <!-- User management will go here -->
+            </div>
+            
+            <div class="card">
+                <h2>Sales Analytics</h2>
+                <p>View detailed sales reports and analytics.</p>
+                <!-- Sales analytics will go here -->
+            </div>
+            
+            <div class="card">
+                <h2>Field Operations</h2>
+                <p>Monitor technician activities and installations.</p>
+                <!-- Field operations will go here -->
+            </div>
+            
+            <div class="card">
+                <h2>Customer Service</h2>
+                <p>View customer accounts and support tickets.</p>
+                <!-- Customer service will go here -->
+            </div>
+            
+            <div class="card">
+                <h2>Network Status</h2>
+                <p>Monitor network performance and outages.</p>
+                <!-- Network status will go here -->
+            </div>
+            
+            <div class="card">
+                <h2>System Settings</h2>
+                <p>Configure system settings and parameters.</p>
+                <!-- System settings will go here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            // Redirect to home
+            window.location.href = "/";
+        }
+    </script>
+</body>
+</html> 
