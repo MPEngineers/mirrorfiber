@@ -25,7 +25,7 @@ def db_user_data_from_email(email: str, db: Session):
         # Query user and also check that they have active access to the application
         print("email: ", email)
         
-        # Raw SQL query to check email and get role for mirrorfiber app
+        # Raw SQL query to check email and get role for mirriorfiber app
         query = """
         SELECT 
             u.id, u.phone, u.name, u.username, r.name as role_name
@@ -38,12 +38,14 @@ def db_user_data_from_email(email: str, db: Session):
         JOIN 
             applications a ON ua.application_id = a.id
         WHERE 
-            u.email = %s
+            u.email = :email
             AND a.name = 'mirrorfiber'
-            AND u.active = TRUE
+            AND ua.is_active = TRUE
         """
         
-        result = db.execute(text(query), (email,)).first()
+        # Create a SQLAlchemy text object with parameters bound directly
+        stmt = text(query).bindparams(email=email)
+        result = db.execute(stmt).first()
         
         print("query result: ", result)
         if result:
@@ -64,7 +66,9 @@ def db_user_data_from_email(email: str, db: Session):
             "description": "User doesn't exist or doesn't have permission to access this application"
         }
     except Exception as e:
-        print(e)
+        print(f"Error in db_user_data_from_email: {e}")
+        import traceback
+        traceback.print_exc()
         return {
             "status": False,
             "description": "Error checking user permissions"
