@@ -43,7 +43,7 @@ def db_user_data_from_email(email: str, db: Session):
             AND u.active = TRUE
         """
         
-        result = db.execute(text(query), [email]).first()
+        result = db.execute(text(query), (email,)).first()
         
         print("query result: ", result)
         if result:
