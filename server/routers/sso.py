@@ -40,7 +40,7 @@ def db_user_data_from_email(email: str, db: Session):
         WHERE 
             u.email = :email
             AND a.name = 'mirrorfiber'
-            AND ua.is_active = TRUE
+            AND u.active = TRUE
         """
         
         # Create a SQLAlchemy text object with parameters bound directly
