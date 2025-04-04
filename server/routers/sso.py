@@ -90,6 +90,6 @@ def handle_jalfry_callback(token: str):
     if token["status"]==False:
         return {"status": False, "description": "Could not generate token: STA291"}
     token = token["token"]
-    response = RedirectResponse(url="/", status_code=303)
+    response = RedirectResponse(url="/dashboard", status_code=303)
     response.set_cookie(key="jwt_token", value=token, httponly=True, secure=True, samesite="none")
     return response
