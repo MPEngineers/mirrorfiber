@@ -29,7 +29,7 @@ def create_verification_token(email):
         "email": email,
         "application_name": APP_NAME,
         "timestamp": datetime.now().isoformat(),
-        "exp": int(expiration.timestamp())  # Standard JWT expiration claim
+        "expiration": int(expiration.timestamp())  # Standard JWT expiration claim
     }
     token = jwt.encode(payload, JALFRY_JWT_KEY, algorithm=ALGORITHM)
     return token
