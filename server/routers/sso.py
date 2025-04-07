@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from utilities.auth import SECRET_KEY, ALGORITHM, generate_token, verify_token
-from datetime import datetime
+from datetime import datetime, timedelta
 import jwt
 import requests
 from sqlalchemy.orm import Session
@@ -24,7 +24,7 @@ log = logging.getLogger()
 
 def create_verification_token(email):
     """Create a signed token for verification with Pyvix"""
-    expiration = datetime.now() + datetime.timedelta(seconds=10)
+    expiration = datetime.now() + timedelta(seconds=10)
     payload = {
         "email": email,
         "app_name": APP_NAME,
