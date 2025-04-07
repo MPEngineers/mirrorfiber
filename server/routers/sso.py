@@ -16,7 +16,6 @@ router = APIRouter()
 
 load_dotenv()
 
-JALFRY_JWT_KEY = os.getenv("JALFRY_JWT_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 EXTERNAL_API_SECRET = os.getenv("EXTERNAL_API_SECRET")
 PYVIX_URL = os.getenv("PYVIX_URL", "https://pyvix.com/api/verify_access")
@@ -71,7 +70,7 @@ def verify_user_with_pyvix(email):
         
         user_token = result["token"]
         try:
-            user_data = jwt.decode(user_token, JALFRY_JWT_KEY, algorithms=[ALGORITHM])
+            user_data = jwt.decode(user_token, EXTERNAL_API_SECRET, algorithms=[ALGORITHM])
             
             # Check if the token contains the required fields
             required_fields = ["id", "phone", "name", "username", "role"]
