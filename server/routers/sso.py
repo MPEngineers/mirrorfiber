@@ -73,7 +73,7 @@ def verify_user_with_pyvix(email):
             user_data = jwt.decode(user_token, EXTERNAL_API_SECRET, algorithms=[ALGORITHM])
             
             # Check if the token contains the required fields
-            required_fields = ["id", "phone", "name", "username", "role"]
+            required_fields = ["id", "phone", "name", "username", "role", "email"]
             if not all(field in user_data for field in required_fields):
                 missing = [field for field in required_fields if field not in user_data]
                 log.error(f"Missing fields in user data: {missing}")
@@ -85,6 +85,7 @@ def verify_user_with_pyvix(email):
             return {
                 "status": True,
                 "data": {
+                    "email": user_data["email"],
                     "id": user_data["id"],
                     "phone": user_data["phone"],
                     "name": user_data["name"],
