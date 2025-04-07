@@ -61,7 +61,7 @@ def verify_user_with_pyvix(email):
         print("result: ", result)
         
         # Decode the returned token
-        if "token" not in result:
+        if "access_token" not in result:
             log.error("No token in Pyvix response")
             return {
                 "status": False,
