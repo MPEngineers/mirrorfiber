@@ -27,7 +27,7 @@ def create_verification_token(email):
     expiration = datetime.now() + timedelta(seconds=10)
     payload = {
         "email": email,
-        "app_name": APP_NAME,
+        "application_name": APP_NAME,
         "timestamp": datetime.now().isoformat(),
         "exp": int(expiration.timestamp())  # Standard JWT expiration claim
     }
