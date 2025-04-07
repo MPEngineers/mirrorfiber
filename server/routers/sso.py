@@ -18,6 +18,7 @@ load_dotenv()
 
 JALFRY_JWT_KEY = os.getenv("JALFRY_JWT_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
+EXTERNAL_API_SECRET = os.getenv("EXTERNAL_API_SECRET")
 PYVIX_URL = os.getenv("PYVIX_URL", "https://pyvix.com/api/verify_access")
 APP_NAME = os.getenv("APP_NAME", "mirrorfiber")
 log = logging.getLogger()
@@ -31,7 +32,7 @@ def create_verification_token(email):
         "timestamp": datetime.now().isoformat(),
         "expiration": int(expiration.timestamp())  # Standard JWT expiration claim
     }
-    token = jwt.encode(payload, JALFRY_JWT_KEY, algorithm=ALGORITHM)
+    token = jwt.encode(payload, EXTERNAL_API_SECRET, algorithm=ALGORITHM)
     return token
 
 def verify_user_with_pyvix(email):
