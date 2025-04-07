@@ -57,6 +57,8 @@ def verify_user_with_pyvix(email):
         
         # Parse the response
         result = response.json()
+
+        print("result: ", result)
         
         # Decode the returned token
         if "token" not in result:
