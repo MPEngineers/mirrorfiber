@@ -68,7 +68,7 @@ def verify_user_with_pyvix(email):
                 "description": "Invalid response from verification service"
             }
         
-        user_token = result["token"]
+        user_token = result["access_token"]
         try:
             user_data = jwt.decode(user_token, EXTERNAL_API_SECRET, algorithms=[ALGORITHM])
             
