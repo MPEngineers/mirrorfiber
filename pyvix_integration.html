@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyvix User Verification Documentation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #3498db;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            overflow-x: auto;
+        }
+        .code-block {
+            background-color: #f8f8f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #e7f4ff;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        .success-response, .failure-response {
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success-response {
+            border-left: 4px solid #27ae60;
+        }
+        .failure-response {
+            border-left: 4px solid #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pyvix User Verification Documentation</h1>
+
+    <h2>Overview</h2>
+    <p>
+        The Mirror Fiber application implements a secure verification flow using Pyvix as an external authentication service. 
+        This system allows verification of user access rights without maintaining a duplicate user database, 
+        relying instead on a trusted third-party service for user validation.
+    </p>
+
+    <h2>Key Components</h2>
+
+    <h3>1. Token Creation</h3>
+    <div class="code-block">
+        <pre><code>def create_verification_token(email):
+    """Create a signed token for verification with Pyvix"""
+    expiration = datetime.now() + timedelta(seconds=10)
+    payload = {
+        "email": email,
+        "application_name": APP_NAME,
+        "timestamp": datetime.now().isoformat(),
+        "expiration": int(expiration.timestamp())  # Standard JWT expiration claim
+    }
+    token = jwt.encode(payload, EXTERNAL_API_SECRET, algorithm=ALGORITHM)
+    return token</code></pre>
+    </div>
+
+    <p>
+        This function creates a short-lived JWT (JSON Web Token) that:
+    </p>
+    <ul>
+        <li>Contains the user's email address</li>
+        <li>Identifies the application making the request</li>
+        <li>Includes a timestamp for request tracing</li>
+        <li>Sets a short expiration (10 seconds) for security</li>
+        <li>Is signed with the application's API secret</li>
+    </ul>
+
+    <h3>2. User Verification</h3>
+    <div class="code-block">
+        <pre><code>def verify_user_with_pyvix(email):
+    """Verify user access with Pyvix API"""
+    # Creates token, sends to Pyvix, and processes response
+    # Returns user data if verification succeeds</code></pre>
+    </div>
+
+    <p>
+        This function:
+    </p>
+    <ol>
+        <li>Creates a verification token for the user's email</li>
+        <li>Sends a secure request to the Pyvix service</li>
+        <li>Processes the response to extract user information</li>
+        <li>Returns standardized user data or error information</li>
+    </ol>
+
+    <h2>Verification Flow</h2>
+    <ol>
+        <li><strong>Token Creation</strong>: A short-lived JWT is created with the user's email</li>
+        <li><strong>API Request</strong>: The token is sent to Pyvix's verification endpoint</li>
+        <li><strong>Response Validation</strong>: Pyvix's response is checked for a valid access token</li>
+        <li><strong>User Data Extraction</strong>: The response token is decoded to extract user details</li>
+        <li><strong>Validation</strong>: User data is checked for completeness (required fields)</li>
+        <li><strong>Result Return</strong>: Success with user data or failure with an error description</li>
+    </ol>
+
+    <h2>Return Value Structure</h2>
+    <p>
+        The function returns a dictionary with a standardized structure:
+    </p>
+
+    <h3>Success Case:</h3>
+    <div class="success-response">
+        <pre><code>{
+    "status": true,
+    "data": {
+        "email": "user@example.com",
+        "id": "user-id",
+        "phone": "user-phone",
+        "name": "User Name",
+        "username": "username",
+        "role": "user-role"
+    }
+}</code></pre>
+    </div>
+
+    <h3>Failure Case:</h3>
+    <div class="failure-response">
+        <pre><code>{
+    "status": false,
+    "description": "Reason for failure"
+}</code></pre>
+    </div>
+
+    <h2>Error Handling</h2>
+    <p>
+        The verification process handles several error scenarios:
+    </p>
+    <ul>
+        <li>Network/connection issues with Pyvix</li>
+        <li>Non-200 HTTP response codes</li>
+        <li>Missing token in Pyvix response</li>
+        <li>Invalid token format</li>
+        <li>Missing required user data fields</li>
+        <li>Exceptions during token decoding</li>
+    </ul>
+
+    <h2>Security Considerations</h2>
+    <ol>
+        <li><strong>Short-lived tokens</strong>: Verification tokens expire after 10 seconds</li>
+        <li><strong>Secure transmission</strong>: Uses HTTPS for all API calls</li>
+        <li><strong>Minimal data exposure</strong>: Only necessary user information is processed</li>
+        <li><strong>Error logging</strong>: Errors are logged for monitoring without exposing sensitive data</li>
+        <li><strong>Comprehensive validation</strong>: All response data is validated before use</li>
+    </ol>
+
+    <h2>Integration Points</h2>
+    <p>
+        This verification system integrates with:
+    </p>
+    <ul>
+        <li>The SSO callback endpoint (<code>/sso/{token}</code>)</li>
+        <li>User authentication workflows</li>
+        <li>Role-based access control</li>
+    </ul>
+
+    <div class="note">
+        <p><strong>Note:</strong> This documentation is for internal developer reference. For end-user documentation, please refer to the user guides.</p>
+    </div>
+</body>
+</html>
